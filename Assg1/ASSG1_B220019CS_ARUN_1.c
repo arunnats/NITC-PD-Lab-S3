@@ -6,7 +6,7 @@ void main()
 {
     char ch, sentence[MAX_LENGTH];
     fgets(sentence, sizeof(sentence), stdin);
-    //printf("%s",sentence);                             testing input
+    //printf("%s",sentence);                          
     scanf("%c",&ch);
     if(ch >= 'A' && ch<= 'Z')
     {

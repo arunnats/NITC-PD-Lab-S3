@@ -1,17 +1,27 @@
 #include<stdio.h>
 #include<string.h>
-#define LENGTH 200
+#define STRLENGTH 200
 
 void main()
 {
-    char Str[LENGTH], fancyStr[LENGTH];
+
+    char Str[STRLENGTH];
     scanf("%[^\n]", Str); 
     //printf("%s", Str);
-    int i,j,n=0,k=0;
-    while(Str[n]!='\0')
+    int i,j,len=0,k=0;
+    while(Str[len]!='\0')
     {
-             
-             n++;
+             len++;
     }
-    
+    int FancyStrLen= len*(len+1)/2-1;
+    char FancyStr[FancyStrLen];
+    for (int i = 0; i < len && k < FancyStrLen; i++) 
+    {
+        for (int j = 0; j <= i && k < FancyStrLen; j++) 
+        {
+            FancyStr[k++] = Str[i];
+        }
+    }
+    //printf("%s",FancyStr); 
+
 }   
