@@ -1,5 +1,4 @@
 #include<stdio.h>
-#include<string.h>
 #define STRLENGTH 200
 
 void main()
@@ -7,7 +6,6 @@ void main()
 
     char Str[STRLENGTH];
     scanf("%[^\n]", Str); 
-    //printf("%s", Str);
     int i,j,len=0,k=0;
     while(Str[len]!='\0')
     {
@@ -15,14 +13,22 @@ void main()
     }
     int FancyStrLenMax= len*(len+1)/2-1;
     char FancyStr[FancyStrLenMax];
-    for (int i = 0; i < len && k < FancyStrLenMax; i++) 
+    /*for (int i = 0; i < len && k < FancyStrLenMax; i++) 
     {
         for (int j = 0; j <= i && k < FancyStrLenMax; j++) 
         {
             FancyStr[k++] = Str[i];
         }
+    } */
+    int n=0;
+    while (Str[n] != '\0') {
+        for (int i = 0; i <= n; i++) {
+            FancyStr[k++] = Str[n];
+        }
+        n++;
     }
-    //printf("%s",FancyStr); 
+    FancyStr[k] = '\0';
+    
 
     int freq[256]={0}, FancyStrLen=0;
     while(FancyStr[FancyStrLen]!='\0')
@@ -30,50 +36,9 @@ void main()
              FancyStrLen++;
     }
 
-    /*for ( i = 0; i < FancyStrLen; i++)
-    {
-        for ( j = 0; j < 128; j++)
-        {   
-            if((char)j==FancyStr[j])
-            {
-                freq[j]++;
-            }
-        }
-                                Did not work
-    }
-
-    for ( i = 0; i < 128; i++)
-    {
-        printf("%c    %d\n",(char)i,freq[i]);
-    }
-    
-     for (int i = 0; i < FancyStrLen; i++) 
-     {
-        char ch = FancyStr[i];
-        freq[ch]++;
-     }
-
-    /* for ( i = 0; i < 128; i++)
-     {
-        printf("%c    %d\n",(char)i,freq[i]);
-     }
-     printf("%s",FancyStr);
-
-     char FreqChar = FancyStr[0],tempChar;
-     int FrequencyChar = freq[FancyStr[0]];
-     for ( i = 0; i < FancyStrLen; i++)
-     {
-        tempChar = FancyStr[i];
-        if(freq[tempChar]>FrequencyChar)
-        FreqChar=tempChar;
-        FrequencyChar=freq[tempChar];
-     }
-     printf("%c",FreqChar);
-     */
-
     for (int i = 0; i < FancyStrLen; i++) {
         char tempChar = FancyStr[i];
-        freq[tempChar]++;
+        freq[(int)tempChar]++;
     }
     
     char FreqChar = FancyStr[0];

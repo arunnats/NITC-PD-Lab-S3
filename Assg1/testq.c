@@ -1,32 +1,52 @@
-
 #include <stdio.h>
 
-double factorial(int num) {
-    if (num == 1 || num == 0) {
-        return 1.0; // Base case: factorial of 0 and 1 is 1
-    } else {
-        return num * factorial(num - 1); // Recursive call to calculate factorial
+#define MAX_LENGTH 100
+
+char findMostFrequentChar(const char *str) {
+    int freq[256] = {0}; // Initialize frequency array to count characters
+    int n = 0;
+
+    // Step 2: Create the fancy string and count its length
+    char fancyStr[MAX_LENGTH * (MAX_LENGTH + 1) / 2];
+    int k = 0;
+
+    while (str[n] != '\0') {
+        for (int i = 0; i <= n; i++) {
+            fancyStr[k++] = str[n];
+        }
+        n++;
     }
+    fancyStr[k] = '\0'; // Null-terminate the fancy string
+
+    // Step 3: Count the frequency of each character in the fancy string
+    n = k; // Update n to the length of the fancy string
+    for (int i = 0; i < n; i++) {
+        char ch = fancyStr[i];
+        freq[ch]++;
+    }
+
+    // Step 4: Find the character with the maximum frequency
+    char mostFrequentChar = fancyStr[0];
+    int maxFrequency = freq[fancyStr[0]];
+
+    for (int i = 1; i < n; i++) {
+        char ch = fancyStr[i];
+        if (freq[ch] > maxFrequency) {
+            mostFrequentChar = ch;
+            maxFrequency = freq[ch];
+        }
+    }
+
+    return mostFrequentChar;
 }
 
-double power(double base, int exp) {
-    double ans = 1.0;
-    for (int i = 0; i < exp; i++) {
-        ans *= base;
-    }
-    return ans;
-}
-void main() {
-    int x, n;
-    scanf("%d", &x);
-    scanf("%d", &n);
-    double rad_x = x * (3.1415 / 180.0), sum = 0.0;
+int main() {
+    char str[MAX_LENGTH];
+    printf("Enter the input string: ");
+    scanf("%s", str);
 
-    for (int i = 0; i <= n; i++) {
-        int sign = (i % 2 == 0) ? 1 : -1; // Alternate the sign of each term
-        double term = (sign * power(rad_x, 2 * i + 1)) / factorial(2 * i + 1);
-        sum += term;
-    }
+    char mostFrequentChar = findMostFrequentChar(str);
+    printf("The character that appears most frequently in the fancy string is: %c\n", mostFrequentChar);
 
-    printf("%.4f", sum);
+    return 0;
 }
