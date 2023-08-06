@@ -1,26 +1,32 @@
+
 #include <stdio.h>
 
-void printNumbersReverse(int n) {
-    if (n == 1) {
-        printf("%d", n); // Base case: print the first number without space
+double factorial(int num) {
+    if (num == 1 || num == 0) {
+        return 1.0; // Base case: factorial of 0 and 1 is 1
     } else {
-        printNumbersReverse(n - 1); // Recursively call printNumbersReverse with n-1
-        printf(" %d", n); // Print the current number followed by a space
+        return num * factorial(num - 1); // Recursive call to calculate factorial
     }
 }
 
-int main() {
-    int N;
-    printf("Enter a positive integer N: ");
-    scanf("%d", &N);
+double power(double base, int exp) {
+    double ans = 1.0;
+    for (int i = 0; i < exp; i++) {
+        ans *= base;
+    }
+    return ans;
+}
+void main() {
+    int x, n;
+    scanf("%d", &x);
+    scanf("%d", &n);
+    double rad_x = x * (3.1415 / 180.0), sum = 0.0;
 
-    if (N > 0) {
-        printf("Numbers from %d to 1 in reverse order: ", N);
-        printNumbersReverse(N);
-        printf("\n");
-    } else {
-        printf("Please enter a positive integer.\n");
+    for (int i = 0; i <= n; i++) {
+        int sign = (i % 2 == 0) ? 1 : -1; // Alternate the sign of each term
+        double term = (sign * power(rad_x, 2 * i + 1)) / factorial(2 * i + 1);
+        sum += term;
     }
 
-    return 0;
+    printf("%.4f", sum);
 }
