@@ -26,7 +26,7 @@ int main()
     scanf("%d",&key);
 
     int ans = linear(arr, key, n);
-    
+
     printf("%d", ans);
-    return 0;
+    return 1;
 }
