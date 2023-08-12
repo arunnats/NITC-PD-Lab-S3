@@ -1,25 +1,29 @@
 #include<stdio.h>
 
-getK(int arr[],int n,int k)
-{
-    int mid, min, max;
-    min=0,max=n-1,count=0;
+int getK(int arr[], int n, int k)
+     {
+    int mid, min, max, missCount, kTh = -1;
+    min = 0;
+    max = n - 1;
 
-    while(min<=max)
+    while (min <= max) 
     {
-        mid= min + (max-min)/2;
-        count= arr[mid] - arr[min] - (mid - min);
-        if (count >= k) 
+        mid = (min + max) / 2;
+        missCount = arr[mid] - mid - 1;
+        
+        if (missCount >= k) 
         {
-            min = mid - 1;
+            
+            kTh = arr[mid] - (missCount - k + 1);
+            max = mid - 1; 
         } 
-        else 
-        {
-            k = k- count;
-            min = mid + 1;
+        else
+         {
+            min = mid + 1; 
         }
     }   
-    
+
+    return kTh;
 }
 
 int main() 
@@ -38,6 +42,5 @@ int main()
     int ans = getK(arr, n, k);
     printf("%d\n", ans);
 
-    return 1;
+    return 0; 
 }
-
