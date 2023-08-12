@@ -42,5 +42,5 @@ int main()
     int ans = getK(arr, n, k);
     printf("%d\n", ans);
 
-    return 0; 
+    return 1; 
 }
