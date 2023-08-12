@@ -50,7 +50,7 @@ int main()
         }
     }
 
-    printf("%d\n", min);
+    printf("%d", min);
 
     return 1;
 }

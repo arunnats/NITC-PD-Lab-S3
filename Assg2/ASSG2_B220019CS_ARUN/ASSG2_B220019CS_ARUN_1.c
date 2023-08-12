@@ -40,7 +40,7 @@ int main()
     scanf("%d", &k);
 
     int ans = getK(arr, n, k);
-    printf("%d\n", ans);
+    printf("%d", ans);
 
     return 1; 
 }
