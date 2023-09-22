@@ -1,0 +1,42 @@
+Merge-Sort(A, p, r)
+    if p < r
+        q = floor((p + r) / 2)
+        Merge-Sort(A, p, q)
+        Merge-Sort(A, q + 1, r)
+        Merge(A, p, q, r)
+
+Merge(A, p, q, r)
+    n1 = q - p + 1
+    n2 = r - q
+
+    L[n1]
+    R[n2]
+
+    for i = 1 to n1
+        L[i] = A[p + i - 1]
+    for j = 1 to n2
+        R[j] = A[q + j]
+
+    i = 1
+    j = 1
+
+    for k = p to r
+        if L[i] <= R[j]
+            A[k] = L[i]
+            i = i + 1
+        else
+            A[k] = R[j]
+            j = j + 1
+
+Print(A, n)
+    for i = 1 to n
+        print A[i]
+        if i < n
+            print " "
+    print new line
+
+main()
+    input: n, A[1..n]
+
+    Merge-Sort(A, 1, n)
+    Print(A, n)

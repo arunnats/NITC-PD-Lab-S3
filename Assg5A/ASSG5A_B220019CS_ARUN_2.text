@@ -1,0 +1,34 @@
+minheapify(arrp[],n,i)   // MAX-HEAPIFY
+    small = i
+    l= 2*i
+    r= 2*i+1
+
+    if l< n && arr[l] > arr[small]
+        small=l
+    if r< n && arr[r] > arr[small]
+        small=r
+    
+    if small != i
+        swap(arr[i], small)
+        minheapify(arr,n,small)
+
+heapsort(arr[],n)  //BUILD-MAX-HEAP
+
+    for i=(n/2)-1 downto 0
+        minheapify(arr,n,i)
+    
+    for i=n-1 downto 0
+        swap(arr[0], arr[i])
+        minheapify(arr,i,0)
+
+swap(a,b)
+    temp = a
+    a=b
+    b=temp
+
+main()
+    input : n, arr[]
+
+    heapsort(arr,n)
+
+    print : arr[]
