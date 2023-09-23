@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 
 struct node {
     int data;
@@ -20,14 +20,13 @@ node* create_node(int k)
 void list_insert_tail(node** L, int k)
 {
     node* newNode = create_node(k);
-    node* current = *L;
-    if (current->next == NULL)
+    if (*L == NULL)
     {
-        // Fixed assignment to newNode
         *L = newNode;
     }
     else
     {
+        node* current = *L;
         while (current->next != NULL)
         {
             current = current->next;
@@ -40,7 +39,7 @@ void list_insert_front(node** L, int k)
 {
     node* newNode = create_node(k);
     newNode->next = *L;
-    *L = newNode;  // Fixed missing semicolon
+    *L = newNode;
 }
 
 int list_pos(node** L, int k)
@@ -49,7 +48,7 @@ int list_pos(node** L, int k)
     node* current = *L;
     while (current != NULL)
     {
-        if (current->data == k)  // Fixed comparison operator
+        if (current->data == k)
         {
             return pos;
         }
@@ -71,12 +70,12 @@ int list_length(node** L)
     return len;
 }
 
-int list_search(node** L, int k)  // Changed the function name and parameter
+int list_search(node** L, int k)
 {
     node* current = *L;
     while (current != NULL)
     {
-        if (current->data == k)  // Fixed comparison operator
+        if (current->data == k)
         {
             return 1;
         }
@@ -87,60 +86,69 @@ int list_search(node** L, int k)  // Changed the function name and parameter
 
 void list_insert_before(node** L, int x, int y)
 {
-    int pos = list_pos(L, y);  // Changed parameter
-    if (pos == 0)  // Fixed comparison operator
+    int pos = list_pos(L, y);
+    if (pos == 0 || pos == -1)
     {
-        list_insert_front(L, x);  // Changed parameter
-    }
-    
-    node* newnode = create_node(x);
-    node* current = *L;
-    node* prev = NULL;
-    for (int i = 0; i < pos; i++)
-    {
-        prev = current;
-        current = current->next;
-    }
-    newnode->next = current;  // Fixed assignment
-    if (prev != NULL)
-    {
-        prev->next = newnode;
+        list_insert_front(L, x);
     }
     else
     {
-        *L = newnode;
+        node* newnode = create_node(x);
+        node* current = *L;
+        node* prev = NULL;
+        for (int i = 0; i < pos; i++)
+        {
+            prev = current;
+            current = current->next;
+        }
+        newnode->next = current;
+        if (prev != NULL)
+        {
+            prev->next = newnode;
+        }
+        else
+        {
+            *L = newnode;
+        }
     }
 }
 
 void list_insert_after(node** L, int x, int y)
 {
-    int pos = list_pos(L, y);  // Changed parameter
-    int len = list_length(L);  // Changed parameter
-    if (pos == len)  // Fixed comparison operator
+    int pos = list_pos(L, y);
+    int len = list_length(L);
+    if (pos == len - 1 || pos == -1)
     {
-        list_insert_tail(L, x);  // Changed parameter
-    }
-
-    node* newnode = create_node(x);
-    node* current = *L;
-    node* prev = NULL;
-    for (int i = 0; i <= pos; i++)
-    {
-        prev = current;
-        current = current->next;
-    }
-    newnode->next = current;  // Fixed assignment
-    if (prev != NULL)
-    {
-        prev->next = newnode;
+        list_insert_tail(L, x);
     }
     else
     {
-        *L = newnode;
+        node* newnode = create_node(x);
+        node* current = *L;
+        node* prev = NULL;
+        for (int i = 0; i <= pos; i++)
+        {
+            prev = current;
+            current = current->next;
+        }
+        newnode->next = current;
+        if (prev != NULL)
+        {
+            prev->next = newnode;
+        }
+        else
+        {
+            *L = newnode;
+        }
     }
 }
-int list_delete_first(node** L)  // Changed parameter
+
+int list_delete_first(node** L)
 {
+    if (*L == NULL)
+    {
+        return -1;
+    }
     node* currentNode = *L;
     *L = currentNode->next;
     int temp = currentNode->data;
@@ -148,8 +156,12 @@ int list_delete_first(node** L)  // Changed parameter
     return temp;
 }
 
-int list_delete_last(node** L)  // Changed parameter
+int list_delete_last(node** L)
 {
+    if (*L == NULL)
+    {
+        return -1;
+    }
     node* currentNode = *L;
     node* prevNode = NULL;
     while (currentNode->next != NULL)
@@ -172,19 +184,19 @@ int list_delete_last(node** L)  // Changed parameter
 
 int list_delete(node** L, int k)
 {
-    int pos = list_pos(L, k);  // Changed parameter
-    int len = list_length(L);  // Changed parameter
-    if (pos == -1)  // Fixed comparison operator
+    int pos = list_pos(L, k);
+    int len = list_length(L);
+    if (pos == -1)
     {
         return -1;
     }
-    else if (pos == 0)  // Fixed comparison operator
+    else if (pos == 0)
     {
-        return list_delete_first(L);  // Changed function name
+        return list_delete_first(L);
     }
-    else if (pos == len - 1)  // Fixed comparison operator
+    else if (pos == len - 1)
     {
-        return list_delete_last(L);  // Changed function name
+        return list_delete_last(L);
     }
     else
     {
@@ -273,85 +285,84 @@ void list_reverse_even(node** L)
 void list_display(node* L)
 {
     node* current = L;
-    while (current->next != NULL)
+    while (current != NULL)
     {
         printf("%d ", current->data);
         current = current->next;
     }
-    printf("%d", current->data);
 }
 
 int main()
 {
     node* L = NULL;
-    char choice[3]; // Increased size to accommodate "ds" input
-    int key1, key2;
+    char choice[3]; 
+    int x, y;
 
     while (1)
     {
-        scanf(" %2s", choice); // Read up to 2 characters
-
-        if (choice[0] == 'f')
+        scanf(" %2s", choice); 
+        if (strcmp(choice, "f") == 0)
         {
-            scanf("%d", &key1);
-            list_insert_front(&L, key1);
+            scanf("%d", &x);
+            list_insert_front(&L, x);
         }
-        else if (choice[0] == 't')
+        else if (strcmp(choice, "t") == 0)
         {
-            scanf("%d", &key1);
-            list_insert_tail(&L, key1);
+            scanf("%d", &x);
+            list_insert_tail(&L, x);
         }
-        else if (choice[0] == 'a')
+        else if (strcmp(choice, "a") == 0)
         {
-            scanf("%d %d", &key1, &key2);
-            list_insert_after(&L, key1, key2);
+            scanf("%d %d", &x, &y);
+            list_insert_after(&L, x, y);
         }
-        else if (choice[0] == 'b')
+        else if (strcmp(choice, "b") == 0)
         {
-            scanf("%d %d", &key1, &key2);
-            list_insert_before(&L, key1, key2);
+            scanf("%d %d", &x, &y);
+            list_insert_before(&L, x, y);
         }
-        else if (choice[0] == 'd')
+        else if (strcmp(choice, "d") == 0)
         {
-            scanf("%d", &key1);
-            list_delete(&L, key1);
+            scanf("%d", &x);
+            int deleted = list_delete(&L, x);
+            printf("%d\n", deleted);
         }
-        else if (choice[0] == 'i')
+        else if (strcmp(choice, "i") == 0)
         {
-            list_delete_first(&L);
+            int deleted = list_delete_first(&L);
+            printf("%d\n", deleted);
         }
-        else if (choice[0] == 'l')
+        else if (strcmp(choice, "l") == 0)
         {
-            list_delete_last(&L);
+            int deleted = list_delete_last(&L);
+            printf("%d\n", deleted);
         }
-        else if (choice[0] == 's')
+        else if (strcmp(choice, "s") == 0)
         {
-            scanf("%d", &key1);
-            if (list_search(&L, key1) == 1)
-                printf("1\n");
-            else
-                printf("-1\n");
+            scanf("%d", &x);
+            int result = list_search(&L, x);
+            printf("%d\n", result);
         }
-        else if (choice[0] == 'r')
+        else if (strcmp(choice, "r") == 0)
         {
             list_reverse(&L);
             list_display(L);
             printf("\n");
         }
-        else if (choice[0] == 'd' && choice[1] == 's')
+        else if (strcmp(choice, "ds") == 0)
         {
             list_display(L);
             printf("\n");
         }
-        else if (choice[0] == 'r' && choice[1] == 'e')
+        else if (strcmp(choice, "re") == 0)
         {
             list_reverse_even(&L);
             list_display(L);
             printf("\n");
         }
-        else if (choice[0] == 'e')
+        else if (strcmp(choice, "e") == 0)
         {
-            return 0; // Exit the program
+            return 0; 
         }
     }
 
