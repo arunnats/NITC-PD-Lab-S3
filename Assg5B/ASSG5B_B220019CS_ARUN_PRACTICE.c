@@ -28,40 +28,64 @@ node* create_node(int x, int y)
     return newNode;
 }
 
-void add_patient(node** L, int pid,int bn)
+void add_patient(node** L, int pid, int bn)
 {
     node* newNode = create_node(pid, bn);
-    if (*L == NULL)
+    if (*L == NULL || bn < (*L)->bn)
     {
+        newNode->next = *L;
         *L = newNode;
     }
     else
     {
         node* current = *L;
         node* prev = NULL;
-        while (current->bn < bn)
+        while (current != NULL && current->bn < bn)
         {
-            prev = prev->next;
+            prev = current;
             current = current->next;
         }
-        if(current->next=NULL)
+        if (current != NULL)
         {
-            current->next=newNode;
+            newNode->next = current;
+            prev->next = newNode;
         }
         else
         {
-            newNode->next=current;
-            prev->next=newNode;
+            prev->next = newNode;
         }
     }
 }
 
+
 void next_token(node **L)
 {
-    node* current = *L;
-    printf("%d",current->pid);
+    if (*L != NULL)
+    {
+        node* current = *L;
+        printf("%d ", current->pid);
+    }
+    else
+    {
+        printf("0 ");
+    }
 }
 
+
+void call_token(node** L)
+{
+    if (*L != NULL)
+    {
+        node* current = *L;
+        printf("%d ", current->pid);
+        *L = current->next;
+        free(current);
+    }
+    else
+    {
+        printf("0 ");
+    }
+}
 void call_token(node **L)
 {
     node* current = *L;
@@ -74,33 +98,45 @@ void call_token(node **L)
 
 void get_bn(node** L, int bn)
 {
+    int found = 0;
     node* current = *L;
     while (current != NULL)
     {
-        if (current->bn == bn)
+        if (current->pid == bn)
         {
-            printf("%d",current->pid);
-            return;
+            printf("%d ", current->bn);
+            found = 1;
+            break;
         }
         current = current->next;
     }
-    printf("0");
+    if (!found)
+    {
+        printf("0 ");
+    }
 }
 
 void get_pid(node** L, int pid)
 {
+    int found = 0;
     node* current = *L;
     while (current != NULL)
     {
-        if (current->pid == pid)
+        if (current->bn == pid)
         {
-            printf("%d",current->bn);
-            return;
+            printf("%d ", current->pid);
+            found = 1;
+            break;
         }
         current = current->next;
     }
-    printf("0");
+    if (!found)
+    {
+        printf("0 ");
+    }
 }
+
+         
 
 void doctor_a(node** L)
 {
@@ -163,77 +199,58 @@ void display(node* L)
 
 int main()
 {
-    node* L = NULL;
-    char choice[3]; 
-    int x, y;
+    node* L = NULL; 
 
-    while (1)
+    char choice[3];
+    int pid, bn;
+
+    do
     {
-        scanf(" %2s", choice); 
-        if (strcmp(choice, "f") == 0)
+        scanf("%s", choice); 
+        
+        if (strcmp(choice, "a") == 0)
         {
-            scanf("%d", &x);
-            list_insert_front(&L, x);
+            scanf("%d %d", &pid, &bn);
+            add_patient(&L, pid, bn);
         }
-        else if (strcmp(choice, "t") == 0)
+        else if (strcmp(choice, "c") == 0)
         {
-            scanf("%d", &x);
-            list_insert_tail(&L, x);
+            call_token(&L);
         }
-        else if (strcmp(choice, "a") == 0)
+        else if (strcmp(choice, "n") == 0)
         {
-            scanf("%d %d", &x, &y);
-            list_insert_after(&L, x, y);
+            next_token(&L);
         }
-        else if (strcmp(choice, "b") == 0)
+        else if (strcmp(choice, "bn") == 0)
         {
-            scanf("%d %d", &x, &y);
-            list_insert_before(&L, x, y);
+            scanf("%d", &pid);
+            get_bn(&L, pid);
         }
-        else if (strcmp(choice, "d") == 0)
+        else if (strcmp(choice, "pid") == 0)
         {
-            scanf("%d", &x);
-            int deleted = list_delete(&L, x);
-            printf("%d\n", deleted);
+            scanf("%d", &bn);
+            get_pid(&L, bn);
         }
-        else if (strcmp(choice, "i") == 0)
+        else if (strcmp(choice, "dA") == 0)
         {
-            int deleted = list_delete_first(&L);
-            printf("%d\n", deleted);
+            doctor_a(&L);
         }
-        else if (strcmp(choice, "l") == 0)
+        else if (strcmp(choice, "dB") == 0)
         {
-            int deleted = list_delete_last(&L);
-            printf("%d\n", deleted);
-        }
-        else if (strcmp(choice, "s") == 0)
-        {
-            scanf("%d", &x);
-            int result = list_search(&L, x);
-            printf("%d\n", result);
-        }
-        else if (strcmp(choice, "r") == 0)
-        {
-            list_reverse(&L);
-            list_display(L);
-            printf("\n");
-        }
-        else if (strcmp(choice, "ds") == 0)
-        {
-            list_display(L);
-            printf("\n");
-        }
-        else if (strcmp(choice, "re") == 0)
-        {
-            list_reverse_even(&L);
-            list_display(L);
-            printf("\n");
+            doctor_b(&L);
         }
         else if (strcmp(choice, "e") == 0)
         {
-            return 0; 
+            break; // Exit the loop
         }
-    }
+        else if (strcmp(choice, "d") == 0)
+        {
+            display(L);
+        }
+        else
+        {
+            printf("Invalid choice\n");
+        }
 
-    return 0;
+    } while (1);
 }
