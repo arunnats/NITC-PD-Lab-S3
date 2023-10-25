@@ -15,14 +15,14 @@ node* create_node(int x, int y)
 {
     node* newNode = (node*)malloc(sizeof(node));
     newNode->pid = x;
-    newNode->bn =y;
-    if(y>=1 && y<=1000)
+    newNode->bn = y;
+    if (y >= 1 && y <= 1000)
     {
-        newNode->doctor=1;
+        newNode->doctor = 1;
     }
-    if(y>=1001   && y<=10000)
+    if (y >= 1001 && y <= 10000)
     {
-        newNode->doctor=2;
+        newNode->doctor = 2;
     }
     newNode->next = NULL;
     return newNode;
@@ -57,8 +57,7 @@ void add_patient(node** L, int pid, int bn)
     }
 }
 
-
-void next_token(node **L)
+void next_token(node** L)
 {
     if (*L != NULL)
     {
@@ -70,7 +69,6 @@ void next_token(node **L)
         printf("0 ");
     }
 }
-
 
 void call_token(node** L)
 {
@@ -85,15 +83,6 @@ void call_token(node** L)
     {
         printf("0 ");
     }
-}
-void call_token(node **L)
-{
-    node* current = *L;
-    node* tempNode = *L;
-    int temp = current->pid;
-    *L=current->next;
-    free (tempNode->next);
-    printf("%d",temp);
 }
 
 void get_bn(node** L, int bn)
@@ -116,13 +105,13 @@ void get_bn(node** L, int bn)
     }
 }
 
-void get_pid(node** L, int pid)
+void get_pid(node** L, int bn)
 {
     int found = 0;
     node* current = *L;
     while (current != NULL)
     {
-        if (current->bn == pid)
+        if (current->bn == bn)
         {
             printf("%d ", current->pid);
             found = 1;
@@ -136,47 +125,45 @@ void get_pid(node** L, int pid)
     }
 }
 
-         
-
 void doctor_a(node** L)
 {
-    int doctorAFound = 0; 
+    int doctorAFound = 0;
     node* current = *L;
-    
+
     while (current != NULL)
     {
         if (current->doctor == 1)
         {
             printf("%d ", current->pid);
-            doctorAFound = 1; 
+            doctorAFound = 1;
         }
         current = current->next;
     }
-    
+
     if (!doctorAFound)
     {
-        printf("0");
+        printf("0 ");
     }
 }
 
 void doctor_b(node** L)
 {
-    int doctorBFound = 0; 
+    int doctorBFound = 0;
     node* current = *L;
-    
+
     while (current != NULL)
     {
         if (current->doctor == 2)
         {
             printf("%d ", current->pid);
-            doctorBFound = 1; 
+            doctorBFound = 1;
         }
         current = current->next;
     }
-    
+
     if (!doctorBFound)
     {
-        printf("0");
+        printf("0 ");
     }
 }
 
@@ -199,15 +186,15 @@ void display(node* L)
 
 int main()
 {
-    node* L = NULL; 
+    node* L = NULL;
 
     char choice[3];
     int pid, bn;
 
     do
     {
-        scanf("%s", choice); 
-        
+        scanf("%s", choice);
+
         if (strcmp(choice, "a") == 0)
         {
             scanf("%d %d", &pid, &bn);
@@ -246,10 +233,6 @@ int main()
         else if (strcmp(choice, "d") == 0)
         {
             display(L);
-        }
-        else
-        {
-            printf("Invalid choice\n");
         }
 
     } while (1);
