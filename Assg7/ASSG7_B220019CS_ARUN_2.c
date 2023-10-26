@@ -1,62 +1,92 @@
 #include <stdio.h>
-#include <stdlib.h>
-#define MAX 100
+#include <string.h>
 
-struct Stack
+#define MAX 1000
+
+struct Stack 
 {
-  char data[MAX];
-  int top;
+    char data[MAX][MAX];
+    int top;
 };
 
-void initializeStack(struct Stack *stack) 
+void push(struct Stack *stack, const char *str) 
 {
-  stack->top = -1;
+    if (stack->top < MAX) 
+    {
+        strcpy(stack->data[stack->top], str);
+        stack->top++;
+    }
 }
 
-void push(struct Stack *stack, char value) 
+void pop(struct Stack *stack, char *str) 
 {
-  stack->data[++stack->top] = value;
+    if (stack->top > 0) 
+    {
+        stack->top--;
+        strcpy(str, stack->data[stack->top]);
+    }
 }
 
-char pop(struct Stack *stack) 
+void concatenateStrings(char *result, const char *str1, char operator, const char *str2) 
 {
-  return stack->data[stack->top--];
-}
-
-char peek(struct Stack *stack) 
-{
-  return stack->data[stack->top];
+    int i = 0;
+    for (; str1[i] != '\0'; i++)
+    {
+        result[i] = str1[i];
+    }
+    result[i++] = operator;
+    for (int j = 0; str2[j] != '\0'; j++) 
+    {
+        result[i + j] = str2[j];
+    }
+    result[i + strlen(str2)] = '\0';
 }
 
 int main() 
 {
-  char postFix[MAX];
-  char inFix[MAX];
-  int len = 0;
-  scanf(" %[^\n]s", postFix);
-  for (int i = 0; postFix[i] != 0; i++) 
-  {
-    len++;
-  }
+    char postfix[100];
+    scanf("%s", postfix);
 
-  struct Stack stack;
-  initializeStack(&stack);
+    struct Stack stack;
+    stack.top = 0;
 
-  int j = 0;
-  for (int i = 0; i < len; i++) 
-  {
-    if (postFix[i] == '+' || postFix[i] == '-' || postFix[i] == '/' || postFix[i] == '*') 
+    int length = strlen(postfix);
+
+    for (int i = 0; i < length; i++) 
     {
-      char b = pop(&stack);
-      char a = pop(&stack);
-    }
-    else
-    {
-      push(&stack, postFix[i]);
-    }
-  }
+        char currentChar[2] = {postfix[i], '\0'};
+        if (postfix[i] == '+' || postfix[i] == '-' || postfix[i] == '*' || postfix[i] == '/') 
+        {
+            char operand1[MAX], operand2[MAX];
+            pop(&stack, operand1);
+            pop(&stack, operand2);
 
-  inFix[j] = '\0';
-  printf("%s", inFix);
-return 1;
+            char newExpression[MAX];
+            if (i == length - 1) 
+            {
+                concatenateStrings(newExpression, operand2, postfix[i], operand1);
+            } 
+            else 
+            {
+                newExpression[0] = '(';
+                concatenateStrings(newExpression + 1, operand2, postfix[i], operand1);
+                int len = strlen(newExpression);
+                newExpression[len] = ')';
+                newExpression[len + 1] = '\0';
+            }
+
+            push(&stack, newExpression);
+        } 
+        else 
+        {
+            push(&stack, currentChar);
+        }
+    }
+
+    char infixExpression[MAX];
+    pop(&stack, infixExpression);
+
+    printf("%s\n", infixExpression);
+
+    return 1;
 }

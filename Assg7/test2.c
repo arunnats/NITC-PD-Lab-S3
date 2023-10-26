@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>  
+#include <string.h>  // Add this header for strlen
 #define MAX 100
 
 struct Stack
@@ -35,7 +35,7 @@ int main()
     int ans;
     int len = 0;
     scanf(" %[^\n]s", postFix);
-    len = strlen(postFix);  
+    len = strlen(postFix);  // Use strlen to get the length of the input string
 
     struct Stack stack;
     initializeStack(&stack);
@@ -88,7 +88,7 @@ int main()
                 converted = converted * 10 + (postFix[i] - '0');
                 i++;
             }
-            i--; 
+            i--; // Decrease i because we might have read more than one digit
             push(&stack, converted);
         }
     }
@@ -101,5 +101,5 @@ int main()
     {
         printf("%d", temp);
     }
-    return 1;
+    return 0;
 }
