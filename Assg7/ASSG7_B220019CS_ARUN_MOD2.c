@@ -3,29 +3,31 @@
 #include <string.h>
 #define MAX 100
 
-// Define a struct Stack type
-struct Stack {
+struct Stack 
+{
     struct Node* data[10001];
     int top;
 };
 
-struct Node {
+struct Node 
+{
     char data;
     struct Node* left;
     struct Node* right;
 };
 
-// Define a function to check if the stack is empty
-int isEmpty(struct Stack* stack) {
+int isEmpty(struct Stack* stack) 
+{
     return stack->top == -1;
 }
 
-// Define a function to check if the stack is full
-int isFull(struct Stack* stack) {
+int isFull(struct Stack* stack) 
+{
     return stack->top == MAX - 1;
 }
 
-struct Node* createNode(char x) {
+struct Node* createNode(char x) 
+{
     struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));
     newNode->data = x;
     newNode->left = NULL;
@@ -37,8 +39,10 @@ void initializeStack(struct Stack* stack) {
     stack->top = -1;
 }
 
-void push(struct Stack* stack, struct Node* node) {
-    if (isFull(stack)) {
+void push(struct Stack* stack, struct Node* node) 
+{
+    if (isFull(stack)) 
+    {
         printf("Stack is full!\n");
         return;
     }
@@ -46,8 +50,10 @@ void push(struct Stack* stack, struct Node* node) {
     stack->data[++stack->top] = node;
 }
 
-struct Node* pop(struct Stack* stack) {
-    if (isEmpty(stack)) {
+struct Node* pop(struct Stack* stack)
+ {
+    if (isEmpty(stack)) 
+    {
         printf("Stack is empty!\n");
         return NULL;
     }
@@ -55,24 +61,31 @@ struct Node* pop(struct Stack* stack) {
     return stack->data[stack->top--];
 }
 
-struct Node* peek(struct Stack* stack) {
-    if (isEmpty(stack)) {
+struct Node* peek(struct Stack* stack) 
+{
+    if (isEmpty(stack)) 
+    {
         return NULL;
     }
 
     return stack->data[stack->top];
 }
 
-int isOperator(char ch) {
+int isOperator(char ch) 
+{
     if (ch == '+' || ch == '-' || ch == '%' || ch == '*' || ch == '/' || ch == '^') {
         return 1;
-    } else {
+    } 
+    else 
+    {
         return 0;
     }
 }
 
-void printInorder(struct Node* node) {
-    if (node == NULL) {
+void printInorder(struct Node* node) 
+{
+    if (node == NULL) 
+    {
         return;
     }
 
@@ -90,7 +103,8 @@ int main() {
     struct Stack charStack;
     initializeStack(&charStack);
 
-    for (int i = 0; i < len; i++) {
+    for (int i = 0; i < len; i++) 
+    {
         char ch = postFix[i];
         if (isOperator(ch)) {
             struct Node* b = pop(&charStack);
@@ -101,7 +115,9 @@ int main() {
             parentNode->right = b;
 
             push(&charStack, parentNode);
-        } else {
+        } 
+        else 
+        {
             struct Node* charNode = createNode(ch);
             charNode->left = NULL;
             charNode->right = NULL;
@@ -113,5 +129,5 @@ int main() {
     struct Node* root = charStack.data[charStack.top];
     printInorder(root);
 
-    return 0;
+    return ;
 }
