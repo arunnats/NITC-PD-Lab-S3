@@ -17,46 +17,16 @@ node *createnode( int n ){
     return newnode ;
 }
 
-node *build( char *c , int n , int *a ){
-    if( *a < n ){
-        node *temp = NULL ;
-        if( c[*a] != ')'){
-                temp = createnode( c[*a] - '0');
-
-                if( c[++(*a)] == '('){
-                    *a = *a + 1;
-                    temp->left = build( c , n , a );
-                }
-                else 
-                    temp->left = createnode( c[*a] - '0' );
-                
-                if( c[++(*a)] == '('){
-                    *a = *a + 1;
-                    temp->right = build( c , n , a );
-                }
-                else 
-                    temp->right = createnode( c[*a] - '0' );
-                (*a)++;
-        }
-        return temp ;
-    }
-}
-
-int extractNumber(char S[], int* index) {
-    int data = 0;
-    while (S[*index] >= '0' && S[*index] <= '9') {
-        data = data * 10 + (S[*index] - '0');
-        (*index)++;
-    }
-    return data;
-}
 
 struct Node* buildTree(char S[], int* index) {
     if (S[*index] == '(') {
         (*index)++; // Move to the next character
 
-        // Extract the data
-        int data = extractNumber(S, index);
+       int data = 0;
+        while (S[*index] >= '0' && S[*index] <= '9') {
+            data = data * 10 + (S[*index] - '0');
+            *index = *index + 1;
+        }
 
         // Create a new node with the extracted data
         struct Node* newNode = createNode(data);

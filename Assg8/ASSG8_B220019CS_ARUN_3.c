@@ -75,6 +75,7 @@ struct Node* deleteNode(struct Node* root, int k)
     return root;
 }
 
+
 void print(struct Node* root) {
     if (root == NULL) {
         printf("( )");
