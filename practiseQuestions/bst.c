@@ -169,8 +169,10 @@ struct Node* deleteNode(struct Node* root, int k, struct Node* tempRoot)
         int succ = findSuccessor(root,k);
         struct Node* succNode = search(tempRoot,succ);
 
-        root->data=succNode->data;
-        root->right = deleteNode(root->right, succNode->data, tempRoot);
+        root->right = deleteNode(tempRoot, succNode->data, tempRoot);
+        int temp = succNode->data;
+        root->data = temp;
+
 
 
         
@@ -186,9 +188,15 @@ void print(struct Node* root) {
     }
 
     printf("( %d", root->data);
-    print(root->left);
-    print(root->right);
-    printf(" )");
+
+    if (root->left != NULL || root->right != NULL) {
+        printf(" ");
+        print(root->left);
+        printf(" ");
+        print(root->right);
+    }
+
+    printf(")");
 }
 
 int main() {

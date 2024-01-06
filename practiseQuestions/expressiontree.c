@@ -92,44 +92,45 @@ int precedence(char op) {
 }
 
 // Function to convert infix expression to postfix notation
-void infixToPostfix(char infix[], char postfix[]) {
-    struct CharStack* stack = createCharStack();
-    int i, j;
-    i = j = 0;
-
-    while (infix[i] != '\0') {
-        if (infix[i] == ' ') {
-            i++;
-        } else if (isOperand(infix[i])) {
-            while (isOperand(infix[i])) {
-                postfix[j++] = infix[i++];
-            }
-            postfix[j++] = ' '; // Add space after each operand
-        } else if (infix[i] == '(') {
-            pushChar(stack, infix[i++]);
-        } else if (infix[i] == ')') {
-            while (!isCharStackEmpty(stack) && peekChar(stack) != '(') {
-                postfix[j++] = ' '; // Add space before each operator
-                postfix[j++] = popChar(stack);
-            }
-            popChar(stack); // Pop '('
-            i++;
-        } else { // Operator
-            while (!isCharStackEmpty(stack) && precedence(infix[i]) <= precedence(peekChar(stack))) {
-                postfix[j++] = ' '; // Add space before each operator
-                postfix[j++] = popChar(stack);
-            }
-            pushChar(stack, infix[i++]);
-        }
+void infixToPostfix(char *infix, char *postfix) {
+  struct Stack stack;
+  initializeStack(&stack);
+  int count = 0;
+  for (int i = 0; infix[i] != 0; i++) {
+    if (infix[i] == ' ') {
+      continue;
     }
-
-    // Pop remaining operators from stack
-    while (!isCharStackEmpty(stack)) {
-        postfix[j++] = ' '; // Add space before each operator
-        postfix[j++] = popChar(stack);
+    if (infix[i] >= '0' && infix[i] <= '9') {
+      while (infix[i] >= '0' && infix[i] <= '9') {
+        postfix[count++] = infix[i];
+        i++;
+      }
+      i--;
+      postfix[count++] = ' ';
+      
+    } else if (infix[i] == '+' || infix[i] == '-' || infix[i] == '*' || infix[i] == '/') {
+      while (stack.top >= 0 && precedence(peek(&stack)) >= precedence(infix[i])) {
+        postfix[count++] = pop(&stack);
+        postfix[count++] = ' ';
+      }
+      push(&stack, infix[i]);
+    } else if (infix[i] == '(') {
+      push(&stack, infix[i]);
+    } else if (infix[i] == ')') {
+      while (infix[i] == ')' && stack.top >= 0 && peek(&stack) != '(') {
+        postfix[count++] = pop(&stack);
+        postfix[count++] = ' ';
+      }
+      if (stack.top >= 0 && peek(&stack) == '(') {
+        pop(&stack);
+      }
     }
-
-    postfix[j] = '\0'; // Null-terminate the postfix expression
+  }
+  while (stack.top >= 0) {
+    postfix[count++] = pop(&stack);
+    postfix[count++] = ' ';
+  }
+  postfix[count - 1] = '\0';
 }
 
 

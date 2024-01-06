@@ -12,7 +12,7 @@ struct Queue
 int queue_full(struct Queue *q, int n)
 {
     int next = (q->tail + 1) % n;
-    if (next == q->head)
+    if (next = = q->head)
     {
         return -1;
     }
